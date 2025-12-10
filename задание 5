@@ -1,0 +1,49 @@
+using System;
+
+public class Vector
+{
+    private double[] values;
+    
+    public Vector(params double[] values)
+    {
+        this.values = new double[values.Length];
+        Array.Copy(values, this.values, values.Length);
+    }
+    
+    public static double operator *(Vector v1, Vector v2)
+    {
+        if (v1.values.Length != v2.values.Length)
+            throw new ArgumentException("Векторы должны быть одинаковой длины");
+        
+        double result = 0;
+        for (int i = 0; i < v1.values.Length; i++)
+        {
+            result += v1[i] * v2[i];
+        }
+        return result;
+    }
+    
+    public double this[int index]
+    {
+        get => values[index];
+        set => values[index] = value;
+    }
+    
+    public override string ToString()
+    {
+        return "[" + string.Join(", ", values) + "]";
+    }
+}
+
+class Program
+{
+    static void Main(string[] args)
+    {
+        var v1 = new Vector(1, 2, 3);
+        var v2 = new Vector(4, 5, 6);
+        
+        Console.WriteLine(v1 * v2); // 32
+        v1[1] = 10;
+        Console.WriteLine(v1);      // [1, 10, 3]
+    }
+}
